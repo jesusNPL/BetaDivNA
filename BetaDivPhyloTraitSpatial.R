@@ -1,5 +1,5 @@
 
-betaTraitgrid <- function(data, radius, traits, phylotree, phylobeta = FALSE, index = "sorensen") {
+BetaDivPhyloTraitSpatial <- function(data, radius, traits, phylotree, phylobeta = FALSE, index = "sorensen") {
   
   if ( ! ("rgdal" %in% installed.packages())) {install.packages("rgdal", dependencies = T)}
   if ( ! ("rgeos" %in% installed.packages())) {install.packages("rgeos", dependencies = T)}
