@@ -24,7 +24,7 @@
 # index: to calculate "sorensen" or "jaccard". Default is "sorensen".
 
 ###################
-betaSpatial <- function(data, radius, phylotree, phylobeta = F, index = "sorensen"){
+betaDivSpatial <- function(data, radius, phylotree, phylobeta = F, index = "sorensen"){
   
   if ( ! ("rgdal" %in% installed.packages())) {install.packages("rgdal", dependencies = T)}
   if ( ! ("rgeos" %in% installed.packages())) {install.packages("rgeos", dependencies = T)}
