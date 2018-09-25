@@ -25,19 +25,13 @@
 
 ###################
 betaDivSpatial <- function(data, radius, phylotree, phylobeta = F, index = "sorensen"){
-  
-  if ( ! ("rgdal" %in% installed.packages())) {install.packages("rgdal", dependencies = T)}
-  if ( ! ("rgeos" %in% installed.packages())) {install.packages("rgeos", dependencies = T)}
+
   if ( ! ("picante" %in% installed.packages())) {install.packages("picante", dependencies = T)}
   if ( ! ("betapart" %in% installed.packages())) {install.packages("betapart", dependencies = T)}
   if ( ! ("CommEcol" %in% installed.packages())) {install.packages("CommEcol", dependencies = T)}
   if ( ! ("svMisc" %in% installed.packages())) {install.packages("svMisc", dependencies = T)}
   
-  library(rgdal)
-  library(rgeos)
-  library(picante)
-  library(betapart)
-  library(CommEcol)
+  require(picante)
   
   mean_turnover <- numeric(length(data[, 1]))
   mean_nestedness <- numeric(length(data[, 1]))
@@ -45,11 +39,11 @@ betaDivSpatial <- function(data, radius, phylotree, phylobeta = F, index = "sore
   
   for(i in 1:length(data[, 1])){
     svMisc::progress(i, max.value = length(data[, 1]))
-    adj <- select.window(xf = data[i, 1], yf = data[i, 2], radius, xydata = data)[, -c(1, 2)]
+    adj <- CommEcol::select.window(xf = data[i, 1], yf = data[i, 2], radius, xydata = data)[, -c(1, 2)]
     if(phylobeta == F){
-      res <- beta.pair(adj, index.family = index)
+      res <- betapar::beta.pair(adj, index.family = index)
     } else if(phylobeta == T){
-      res <- phylo.beta.pair(adj, phylotree, index.family = index)
+      res <- betapar::phylo.beta.pair(adj, phylotree, index.family = index)
     }
     mean_turnover[i] <- mean(as.matrix(res[[1]])[2:length(as.matrix(res[[1]])[, 1]), 1], na.rm = TRUE)
     mean_nestedness[i] <- mean(as.matrix(res[[2]])[2:length(as.matrix(res[[2]])[, 1]), 1], na.rm = TRUE)
