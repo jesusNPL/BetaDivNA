@@ -1,18 +1,12 @@
 
 BetaDivPhyloTraitSpatial <- function(data, radius, traits, phylotree, phylobeta = FALSE, index = "sorensen") {
-  
-  if ( ! ("rgdal" %in% installed.packages())) {install.packages("rgdal", dependencies = T)}
-  if ( ! ("rgeos" %in% installed.packages())) {install.packages("rgeos", dependencies = T)}
+
   if ( ! ("picante" %in% installed.packages())) {install.packages("picante", dependencies = T)}
   if ( ! ("betapart" %in% installed.packages())) {install.packages("betapart", dependencies = T)}
   if ( ! ("CommEcol" %in% installed.packages())) {install.packages("CommEcol", dependencies = T)}
   if ( ! ("svMisc" %in% installed.packages())) {install.packages("svMisc", dependencies = T)}
   
-  library(rgdal)
-  library(rgeos)
-  library(picante)
-  library(betapart)
-  library(CommEcol)
+  require(picante)
   
   mean_turnover <- numeric(length(data[, 1]))
   mean_nestedness <- numeric(length(data[, 1]))
@@ -20,7 +14,7 @@ BetaDivPhyloTraitSpatial <- function(data, radius, traits, phylotree, phylobeta 
 
   for (i in 1:length(data[, 1])) {
     svMisc::progress(i, max.value = length(data[, 1]))
-    adj <- select.window(xf = data[i, 1], yf = data[i, 2],
+    adj <- CommEcol::select.window(xf = data[i, 1], yf = data[i, 2],
                          radius, xydata = data)[, -(1:2), drop = FALSE]
     if (ncol(adj) == 1) {
       mean_turnover[i] <- 0
@@ -28,10 +22,10 @@ BetaDivPhyloTraitSpatial <- function(data, radius, traits, phylotree, phylobeta 
       mean_beta[i] <- 0
     } else {
       if (!phylobeta) {
-        res <- functional.beta.pair(adj, traits, index.family = index)
+        res <- betapart::functional.beta.pair(adj, traits, index.family = index)
       }
       if(phylobeta) {
-        res <- phylo.beta.pair(adj, phylotree, index.family = index)
+        res <- betapart::phylo.beta.pair(adj, phylotree, index.family = index)
       }
       a <- as.matrix(res[[1]])[, 1]
       b <- as.matrix(res[[2]])[, 1]
