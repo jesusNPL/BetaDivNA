@@ -5,7 +5,6 @@
 #1 - exp((-2/2815)*((sem.nb1.5.w$LL) - (sem.nb1.5.w$logLik_lm.model)))
 
 SARr2 <- function(Lfull, Lnull, N){
-  library(geiger)
   r2 <- 1 - exp((-2/N)*((Lfull) - (Lnull)))
   return(r2)
 }
@@ -13,9 +12,9 @@ SARr2 <- function(Lfull, Lnull, N){
 #SARr2(Lfull = sem.nb1.5.w$LL, Lnull = sem.nb1.5.w$logLik_lm.model, N = 2815)
 
 AICcalc <- function(Lfull, Lnull, LNullNull){
-  library(geiger)
+    if ( ! ("geiger" %in% installed.packages())) {install.packages("geiger", dependencies = T)}
   AICs <- c(AIC(Lfull), AIC(Lnull), AIC(LNullNull))
-  AICw <- aicw(AICs)
+  AICw <- geiger::aicw(AICs)
   return(AICw)
 }
 #AICcalc(Lfull = sem.nb1.5.w, Lnull = sem.nb1.5.w$logLik_lm.model, LNullNull = sem.nb1.5.w$LLNullLlm)
