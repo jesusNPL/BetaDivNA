@@ -20,4 +20,5 @@ AICcalc <- function(Lfull, Lnull, LNullNull){
 #AICcalc(Lfull = sem.nb1.5.w, Lnull = sem.nb1.5.w$logLik_lm.model, LNullNull = sem.nb1.5.w$LLNullLlm)
 
 
-
+## Reference:
+# Cooper and Purvis 2010 Body Size Evolution in Mammals: Complexity in Tempo and Mode. The American Naturalist, 175: 727-738.
